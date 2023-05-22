@@ -4,6 +4,7 @@ import { firebaseAuth } from "../config/firebase.config";
 import { Home, Login, Notfound } from "./pages";
 // Framer Motion
 import { AnimatePresence } from "framer-motion";
+import { validateUser } from "./api";
 
 const App = () => {
    const navigate = useNavigate();
@@ -14,10 +15,12 @@ const App = () => {
 
    // Firebase Auth Observer
    useEffect(() => {
-      firebaseAuth.onAuthStateChanged((userCred) => {
+      firebaseAuth.onAuthStateChanged(async (userCred) => {
          if (userCred) {
             // if user exist then send the token id to backend for verification
-            userCred.getIdToken().then((token) => console.log(token));
+            const token = await userCred.getIdToken();
+            const data = await validateUser(token);
+            console.log(data);
          } else {
             setAuthStatus(false);
             window.localStorage.setItem("auth", "false");
@@ -37,9 +40,8 @@ const App = () => {
       <AnimatePresence mode="wait">
          <div className="h-auto min-w-[680px] bg-primary flex justify-center items-center">
             <Routes>
-               <Route path="/" element={<Home />} />
+               <Route path="/*" element={<Home />} />
                <Route path="/login" element={<Login setAuthStatus={setAuthStatus} />} />
-               <Route path="*" element={<Notfound />} />
             </Routes>
          </div>
       </AnimatePresence>
