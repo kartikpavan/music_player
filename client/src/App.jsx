@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../config/firebase.config";
 import { Home, Login, Notfound } from "./pages";
+// Framer Motion
+import { AnimatePresence } from "framer-motion";
 
 const App = () => {
    const navigate = useNavigate();
@@ -32,13 +34,15 @@ const App = () => {
    }, []);
 
    return (
-      <div className="w-screen h-screen flex justify-center items-center">
-         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login setAuthStatus={setAuthStatus} />} />
-            <Route path="*" element={<Notfound />} />
-         </Routes>
-      </div>
+      <AnimatePresence mode="wait">
+         <div className="h-auto min-w-[680px] bg-primary flex justify-center items-center">
+            <Routes>
+               <Route path="/" element={<Home />} />
+               <Route path="/login" element={<Login setAuthStatus={setAuthStatus} />} />
+               <Route path="*" element={<Notfound />} />
+            </Routes>
+         </div>
+      </AnimatePresence>
    );
 };
 
