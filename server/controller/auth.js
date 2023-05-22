@@ -13,8 +13,9 @@ const login = async (req, res) => {
    try {
       // decoding token to get the user Account information from firebase
       const decodedValue = await admin.auth().verifyIdToken(token);
-      if (!decodedValue) res.status(505).json({ msg: "Unauthorized Access" });
-      else {
+      if (!decodedValue) {
+         res.status(505).json({ msg: "Unauthorized Access" });
+      } else {
          // check user exist in database
          const existingUser = await User.findOne({ user_id: decodedValue.user_id });
          if (!existingUser) {
