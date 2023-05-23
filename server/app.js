@@ -4,19 +4,32 @@ const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 
-const authRoute = require("./routes/auth");
-
 //Middlewares
 app.use(cors());
+app.use(express.json()); // convert incoming form data into JSON formt
 
 // Routes
 app.get("/", (req, res) => {
    res.status(200).json({ msg: "Hello from Root" });
 });
 
+// user Auth Route
+const authRoute = require("./routes/auth");
 app.use("/api/users", authRoute);
 
-const PORT = 3001;
+// Artists Route
+const artistRoute = require("./routes/artist");
+app.use("/api/artists", artistRoute);
+
+// Albums Route
+const albumsRoute = require("./routes/albums");
+app.use("/api/albums", albumsRoute);
+
+// Songs Route
+const songsRoute = require("./routes/songs");
+app.use("/api/songs", songsRoute);
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
    console.log(`Litening on PORT : ${PORT}`);
 });
