@@ -5,6 +5,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { firebaseAuth } from "./config/firebase.config";
 // Pages
 import { Home, Login } from "./pages";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 // Framer Motion
 import { AnimatePresence } from "framer-motion";
 // API request
@@ -56,10 +57,12 @@ const App = () => {
 
    return (
       <AnimatePresence mode="wait">
-         <div className="h-auto min-w-[680px] bg-primary flex justify-center items-center">
+         {/* <div className="h-auto min-w-[680px] bg-primary flex justify-center items-center"> */}
+         <div className="h-auto w-screen bg-primary flex justify-center items-center">
             <Routes>
                <Route path="/*" element={<Home />} />
                <Route path="/login" element={<Login setAuthStatus={setAuthStatus} />} />
+               <Route path="/dashboard/*" element={<AdminDashboard />} />
             </Routes>
          </div>
       </AnimatePresence>

@@ -1,6 +1,6 @@
 import { FaCrown } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/logo2.png";
 //Firebase
 import { firebaseAuth } from "../config/firebase.config";
 import { signOut } from "firebase/auth";
@@ -9,6 +9,7 @@ import { useGlobalContext } from "../context/AppContext";
 // Framer Motion
 import { motion } from "framer-motion";
 import { useState } from "react";
+
 const activeLinkStyle =
    "text-lg text-headingColor hover:text-headingColor font-semibold duration-100 transition-all ease-in-out";
 const nonActiveLinkStyle =
@@ -32,7 +33,7 @@ const Navbar = () => {
       <nav className="flex items-center w-full p-4 md:py-2 md:px-6">
          {/* Logo */}
          <NavLink to="/">
-            <img src={Logo} alt="logo" className="w-16" />
+            <img src={Logo} alt="logo" className="w-24" />
          </NavLink>
          {/* List */}
          <ul className="flex items-center justify-center ml-7">
@@ -74,7 +75,7 @@ const Navbar = () => {
          <div
             onMouseEnter={(e) => setDropDownState(true)}
             onMouseLeave={(e) => setDropDownState(false)}
-            className="flex items-center ml-auto cursor-pointer gap-2 relative"
+            className="flex items-center ml-auto cursor-pointer gap-2 relative h-20"
          >
             <div className="flex flex-col">
                <p className="text-lg text-textColor hover:text-headingColor font-semibold text-right">
@@ -99,8 +100,7 @@ const Navbar = () => {
                   initial={{ opacity: 0, y: -50 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -50 }}
-                  transition={{ type: "spring", stiffness: 100 }}
-                  className="absolute z-10 top-12 right-0 bg-card p-3 shadow-lg rounded-lg backdrop-blur-sm flex flex-col w-48 gap-2 "
+                  className="absolute z-10 top-20 right-0 bg-card p-3 shadow-lg rounded-lg backdrop-blur-sm flex flex-col w-48 gap-2 "
                >
                   <NavLink to="/my-account">
                      <p className="text-base text-textColor hover:font-semibold duration-200 transition-all ease-in-out">
@@ -113,6 +113,18 @@ const Navbar = () => {
                      </p>
                   </NavLink>
                   <hr />
+                  {/* Admin Priviliges */}
+                  {state?.user?.user?.role === "admin" && (
+                     <>
+                        <NavLink to={"/dashboard/home"}>
+                           <p className="text-base text-textColor hover:font-semibold duration-200 transition-all ease-in-out">
+                              ADMIN DASHBOARD
+                           </p>
+                        </NavLink>
+                        <hr />
+                     </>
+                  )}
+
                   <p onClick={logOut} className="text-base text-red-500 ">
                      LOG OUT
                   </p>

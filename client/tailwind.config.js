@@ -59,6 +59,12 @@ export default {
             cartTotal: "#343739",
             loaderOverlay: "rgba(256,256,256,0.1)",
          },
+         scale: {
+            "-100": "-1",
+         },
+         fontFamily: {
+            luvSister: ["Love Ya Like A Sister", "cursive"],
+         },
       },
    },
    plugins: [],
