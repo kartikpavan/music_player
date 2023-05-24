@@ -15,7 +15,7 @@ const saveSong = async (req, res) => {
    });
    try {
       const savedSong = await newSong.save();
-      res.status(200).send({ data: savedSong }); // sending saved user info back to frontend
+      res.status(200).send({ data: savedSong }); // sending saved song info back to frontend
    } catch (error) {
       res.status(500).send({ sucess: false, msg: error }); // internal Server Error
    }
