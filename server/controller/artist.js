@@ -34,7 +34,7 @@ const getAllArtists = async (req, res) => {
    if (!data) {
       return res.status(400).send({ sucess: false, msg: "ERROR! Data not found" }); // internal Server Error
    } else {
-      return res.status(200).send({ success: true, artist: data });
+      return res.status(200).send({ success: true, data: data });
    }
 };
 

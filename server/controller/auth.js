@@ -54,4 +54,16 @@ const login = async (req, res) => {
       return res.status(505).json({ msg: error }); // server error
    }
 };
-module.exports = { login };
+
+// get all users
+
+const getAllUsers = async (req, res) => {
+   const currentUsers = await User.find();
+   if (currentUsers) {
+      return res.status(200).json({ success: true, data: currentUsers });
+   } else {
+      return res.status(500).json({ success: false, msg: "Users not found" });
+   }
+};
+
+module.exports = { login, getAllUsers };

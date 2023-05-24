@@ -18,7 +18,7 @@ const AdminDashboard = () => {
    return (
       <div className="w-full h-auto flex flex-col items-center justify-center bg-primary">
          <Navbar />
-         <div className="my-2 p-2 flex items-center border border-white bg-white rounded-lg shadow-md">
+         <div className="my-4 p-2 flex items-center gap-x-4 border border-white bg-white rounded-lg shadow-md">
             <NavLink
                to="/dashboard/home"
                className={({ isActive }) => (isActive ? activeNavLink : inactiveNavLink)}
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
                <p className="text-lg font-semibold ">Albums</p>
             </NavLink>
          </div>
-         <main className="my-4 w-full p-4">
+         <main className="my-4 w-full lg:w-[70%] p-4">
             <Routes>
                <Route path="/home" element={<DashboardHome />} />
                <Route path="/songs" element={<DashboardSongs />} />

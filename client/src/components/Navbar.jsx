@@ -30,7 +30,7 @@ const Navbar = () => {
          .catch((error) => console.log(error));
    };
    return (
-      <nav className="flex items-center w-full p-4 md:py-2 md:px-6">
+      <nav className="flex items-center w-full p-4 mb-2 md:py-2 md:px-6 shadow-md bg-white ">
          {/* Logo */}
          <NavLink to="/">
             <img src={Logo} alt="logo" className="w-24" />
