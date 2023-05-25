@@ -66,4 +66,17 @@ const getAllUsers = async (req, res) => {
    }
 };
 
-module.exports = { login, getAllUsers };
+// Updating User Role
+const updateUserRole = async (req, res) => {
+   try {
+      const updatedUser = await User.findOneAndUpdate(
+         { _id: req.params.userId },
+         { role: req.body.data.role }
+      );
+      return res.status(200).json({ success: true, data: updatedUser });
+   } catch (error) {
+      return res.status(400).json({ success: false, msg: error });
+   }
+};
+
+module.exports = { login, getAllUsers, updateUserRole };

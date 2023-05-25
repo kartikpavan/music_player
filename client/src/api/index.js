@@ -57,3 +57,16 @@ export async function fetchAllSongs() {
       return null;
    }
 }
+
+// change User Role
+export async function changeUserRole(userId, role) {
+   try {
+      const { data } = await axios.put(`${baseURL}/api/users/updateRole/${userId}`, {
+         data: { role },
+      });
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}

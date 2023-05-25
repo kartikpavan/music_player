@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGlobalContext } from "../../context/AppContext";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { AiFillSetting } from "react-icons/ai";
+import { changeUserRole, fetchAllUsers } from "../../api";
+import { actionType } from "../../reducers/reducer";
+
 const DashboardUsers = () => {
    const { state, dispatch } = useGlobalContext();
 
@@ -35,6 +40,23 @@ const DashboardUsers = () => {
 };
 
 export const DashboardUserCard = ({ data, index }) => {
+   const { state, dispatch } = useGlobalContext();
+
+   const [isModalOpen, setIsModalOpen] = useState(false);
+
+   // updating user Role
+   const updateUserRole = (userId, role) => {
+      changeUserRole(userId, role).then((response) => {
+         // once the data is updated we will fetch the new data from DB and also update the Context provider with the new Data
+         if (response) {
+            fetchAllUsers().then((data) =>
+               dispatch({ type: actionType.SET_ALL_USERS, allUsers: data.data })
+            );
+         }
+      });
+      setIsModalOpen(false);
+   };
+
    const dateConverter = (time) => {
       const d = new Date(time);
       return d.toDateString();
@@ -62,13 +84,55 @@ export const DashboardUserCard = ({ data, index }) => {
          <p className="text-base text-textColor w-275 min-w-[160px] text-center">
             {dateConverter(data?.createdAt)}
          </p>
-         <p
-            className={`text-base ${
+         <div
+            className={`relative flex gap-x-3 items-center justify-center w-275 min-w-[160px] text-center ${
                data?.role === "admin" ? "text-yellow-500 font-semibold" : "text-textColor"
-            } w-275 min-w-[160px] text-center`}
+            }`}
          >
-            {data?.role.toUpperCase()}
-         </p>
+            {/* SUPER ADMIN , if row data id === current User Id */}
+            <p>{data?._id === state.user?.user?._id ? "SUPER ADMIN" : data?.role.toUpperCase()} </p>
+            {/* if user is a member then add setting button to change the role  */}
+            {data?._id !== state.user?.user?._id && (
+               <motion.div
+                  whileTap={{ scale: 0.75 }}
+                  onClick={() => setIsModalOpen((prev) => !prev)}
+               >
+                  <AiFillSetting className="text-textColor" size={22} />
+               </motion.div>
+            )}
+            {isModalOpen && (
+               <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  className="absolute z-10 top-6 right-4 p-2 bg-white rounded-md shadow-md border"
+               >
+                  <p className="text-textColor font-semibold text-sm">
+                     Do you want to grant the user
+                     <span className="text-orange-600">
+                        {data?.role === "admin" ? " MEMBER " : " ADMIN "}
+                     </span>
+                     Privilege ?
+                  </p>
+                  <motion.button
+                     whileTap={{ scale: 0.75 }}
+                     onClick={() => setIsModalOpen((prev) => !prev)}
+                     className="text-sm font-semibold px-2 py-1 m-1 bg-red-200 text-red-600 rounded-md shadow-md "
+                  >
+                     Cancel
+                  </motion.button>
+                  <motion.button
+                     onClick={() =>
+                        updateUserRole(data?._id, data?.role === "admin" ? "member" : "admin")
+                     }
+                     whileTap={{ scale: 0.75 }}
+                     className="text-sm font-semibold px-2 py-1 m-1 bg-orange-200 text-orange-600 rounded-md shadow-md "
+                  >
+                     Yes
+                  </motion.button>
+               </motion.div>
+            )}
+         </div>
       </motion.div>
    );
 };
