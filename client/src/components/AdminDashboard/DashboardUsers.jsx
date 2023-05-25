@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useGlobalContext } from "../../context/AppContext";
 import { motion } from "framer-motion";
-import axios from "axios";
-import { AiFillSetting } from "react-icons/ai";
-import { changeUserRole, fetchAllUsers } from "../../api";
+import { AiFillSetting, AiFillDelete } from "react-icons/ai";
+import { changeUserRole, deleteSingleUser, fetchAllUsers } from "../../api";
 import { actionType } from "../../reducers/reducer";
 
 const DashboardUsers = () => {
@@ -41,7 +40,6 @@ const DashboardUsers = () => {
 
 export const DashboardUserCard = ({ data, index }) => {
    const { state, dispatch } = useGlobalContext();
-
    const [isModalOpen, setIsModalOpen] = useState(false);
 
    // updating user Role
@@ -57,12 +55,38 @@ export const DashboardUserCard = ({ data, index }) => {
       setIsModalOpen(false);
    };
 
+   // delete User
+   const deleteUser = (userId) => {
+      deleteSingleUser(userId).then((response) => {
+         // once the data is deleted we will fetch the new data from DB and also update the Context provider with the new Data
+         if (response) {
+            fetchAllUsers().then((data) =>
+               dispatch({ type: actionType.SET_ALL_USERS, allUsers: data.data })
+            );
+         }
+      });
+   };
+
    const dateConverter = (time) => {
       const d = new Date(time);
       return d.toDateString();
    };
    return (
-      <motion.div className="relative w-full rounded-md flex items-center justify-center py-4 bg-lightOverlay cursor-pointer hover:bg-card hover:shadow-md duration-200 transition-all ease-linear">
+      <motion.div
+         key={index}
+         className="relative w-full rounded-md flex items-center justify-center py-4 bg-lightOverlay cursor-pointer hover:bg-card hover:shadow-md duration-200 transition-all ease-linear"
+      >
+         {/* delete icon */}
+         {data?._id !== state.user?.user?._id && (
+            <motion.div
+               onClick={() => deleteUser(data?._id)}
+               whileTap={{ scale: 0.75 }}
+               className="absolute left-4 w-8 h-8 rounded-md shadow-md flex items-center justify-center bg-red-200 hover:bg-red-500 hover:scale-110 duration-200 transition-all"
+            >
+               <AiFillDelete className="text-red-500 hover:text-white duration-200 transition-all " />
+            </motion.div>
+         )}
+
          {/* user image */}
          <div className="w-275 min-w-[160px] flex items-center justify-center">
             <img

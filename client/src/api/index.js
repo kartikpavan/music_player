@@ -70,3 +70,14 @@ export async function changeUserRole(userId, role) {
       return null;
    }
 }
+
+// Delete user
+export async function deleteSingleUser(userId) {
+   try {
+      const { data } = await axios.delete(`${baseURL}/api/users/delete/${userId}`);
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}

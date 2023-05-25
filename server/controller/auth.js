@@ -79,4 +79,14 @@ const updateUserRole = async (req, res) => {
    }
 };
 
-module.exports = { login, getAllUsers, updateUserRole };
+// delete user
+const deleteUser = async (req, res) => {
+   const result = await User.deleteOne({ _id: req.params.userId }, { new: true });
+   if (!result) {
+      return res.status(400).send({ sucess: false, msg: "ERROR! Data not found" }); // internal Server Error
+   } else {
+      return res.status(200).send({ success: true, msg: "Data deleted" });
+   }
+};
+
+module.exports = { login, getAllUsers, updateUserRole, deleteUser };
