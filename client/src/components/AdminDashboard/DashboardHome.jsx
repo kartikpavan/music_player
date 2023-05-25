@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import DashboardCard from "../DashboardCard";
 import { useGlobalContext } from "../../context/AppContext";
 import { fetchAllAlbums, fetchAllArtists, fetchAllSongs, fetchAllUsers } from "../../api";
 import { actionType } from "../../reducers/reducer";
@@ -9,6 +8,21 @@ import { HiUserGroup } from "react-icons/hi";
 import { FaItunesNote } from "react-icons/fa";
 import { ImUserCheck } from "react-icons/im";
 import { RiAlbumFill } from "react-icons/ri";
+
+// local Card Component
+const DashboardCard = ({ icon, name, count }) => {
+   return (
+      <div className="p-2 w-40 gap-2 h-auto rounded-md shadow-md bg-orange-100/30">
+         <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+               {icon}
+               <p className="text-lg text-textColor font-semibold">{name}</p>
+            </div>
+            <p className="text-lg text-gray-500 font-bold">{count}</p>
+         </div>
+      </div>
+   );
+};
 
 const DashboardHome = () => {
    const { state, dispatch } = useGlobalContext();
