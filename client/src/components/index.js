@@ -7,6 +7,7 @@ import DashboardAlbums from "./AdminDashboard/DashboardAlbums";
 import DashboardAddSong from "./AdminDashboard/DashboardAddSong";
 import DBUserCard from "./DBUserCard";
 import SingleSongCard from "./SingleSongCard";
+import DropDownMenu from "./DropDownMenu";
 export {
    Navbar,
    DashboardHome,
@@ -17,4 +18,5 @@ export {
    DashboardArtists,
    DBUserCard,
    SingleSongCard,
+   DropDownMenu,
 };

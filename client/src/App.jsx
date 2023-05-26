@@ -49,11 +49,11 @@ const App = () => {
    }, []);
 
    // checking if local storage auth state is true
-   useEffect(() => {
-      if (window.localStorage.getItem("auth") === "true") {
-         navigate("/", { replace: true });
-      }
-   }, []);
+   // useEffect(() => {
+   //    if (window.localStorage.getItem("auth") === "true") {
+   //       navigate("/", { replace: true });
+   //    }
+   // }, []);
 
    return (
       <AnimatePresence mode="wait">
