@@ -17,7 +17,7 @@ const DropDownMenu = ({ filterData, title }) => {
             className="text-base tracking-wide text-textColor flex items-center gap-2"
             onClick={() => setFilterMenu((prev) => !prev)}
          >
-            {/* if no filter name is selected then the falback value will be title */}
+            {/* if no filter name is selected then the fallback value will be title(prop)  */}
             {!filterName ? (
                title
             ) : (

@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8638a184-c521-4633-8df3-4d98cd271696" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/SingleSongCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/SingleSongCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/AdminDashboard/DashboardUsers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminDashboard/DashboardUsers.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controller/artist.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controller/artist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controller/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controller/auth.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,6 +15,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/client/src/components/DBUserCard.jsx" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2QKX6ObCzXTBujIEjtqhlX8Gcvu" />
   <component name="ProjectViewState">
@@ -24,6 +30,7 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.updates",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -36,6 +43,9 @@
       <option name="presentableId" value="Default" />
       <updated>1685103072757</updated>
       <workItem from="1685103073444" duration="40000" />
+      <workItem from="1685134865769" duration="110000" />
+      <workItem from="1685134990558" duration="275000" />
+      <workItem from="1685273437012" duration="39000" />
     </task>
     <servers />
   </component>

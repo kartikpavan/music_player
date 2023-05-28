@@ -34,7 +34,7 @@ const login = async (req, res) => {
                const savedUser = await newUser.save();
                res.status(200).send({ user: savedUser }); // sending saved user info back to frontend
             } catch (error) {
-               res.status(500).send({ sucess: false, msg: error }); // internal Server Error
+               res.status(500).send({ success: false, msg: error }); // internal Server Error
             }
          } else {
             // Updating Auth_time
@@ -46,7 +46,7 @@ const login = async (req, res) => {
                );
                res.status(200).send({ user: result });
             } catch (error) {
-               res.status(500).send({ sucess: false, msg: error }); // internal Server Error
+               res.status(500).send({ success: false, msg: error }); // internal Server Error
             }
          }
       }
@@ -83,7 +83,7 @@ const updateUserRole = async (req, res) => {
 const deleteUser = async (req, res) => {
    const result = await User.deleteOne({ _id: req.params.userId }, { new: true });
    if (!result) {
-      return res.status(400).send({ sucess: false, msg: "ERROR! Data not found" }); // internal Server Error
+      return res.status(400).send({ success: false, msg: "ERROR! Data not found" }); // internal Server Error
    } else {
       return res.status(200).send({ success: true, msg: "Data deleted" });
    }

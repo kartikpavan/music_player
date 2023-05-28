@@ -8,6 +8,9 @@ import DashboardAddSong from "./AdminDashboard/DashboardAddSong";
 import DBUserCard from "./DBUserCard";
 import SingleSongCard from "./SingleSongCard";
 import DropDownMenu from "./DropDownMenu";
+import UploadImageContainer from "./UploadImageContainer";
+import UploadAudioContainer from "./UploadAudioContainer";
+
 export {
    Navbar,
    DashboardHome,
@@ -19,4 +22,6 @@ export {
    DBUserCard,
    SingleSongCard,
    DropDownMenu,
+   UploadImageContainer,
+   UploadAudioContainer,
 };

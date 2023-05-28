@@ -22,7 +22,7 @@ const getSingleArtist = async (req, res) => {
    // find the artist using the ID supplied in tha parameter
    const data = await Artist.findOne({ _id: req.params.id });
    if (!data) {
-      return res.status(400).send({ sucess: false, msg: "ERROR! Artist not found" }); // internal Server Error
+      return res.status(400).send({ success: false, msg: "ERROR! Artist not found" }); // internal Server Error
    } else {
       return res.status(200).send({ success: true, data: data });
    }
@@ -32,7 +32,7 @@ const getSingleArtist = async (req, res) => {
 const getAllArtists = async (req, res) => {
    const data = await Artist.find();
    if (!data) {
-      return res.status(400).send({ sucess: false, msg: "ERROR! Data not found" }); // internal Server Error
+      return res.status(400).send({ success: false, msg: "ERROR! Data not found" }); // internal Server Error
    } else {
       return res.status(200).send({ success: true, data: data });
    }
@@ -42,7 +42,7 @@ const getAllArtists = async (req, res) => {
 const deleteArtist = async (req, res) => {
    const result = await Artist.deleteOne({ _id: req.params.id }, { new: true });
    if (!result) {
-      return res.status(400).send({ sucess: false, msg: "ERROR! Data not found" }); // internal Server Error
+      return res.status(400).send({ success: false, msg: "ERROR! Data not found" }); // internal Server Error
    } else {
       return res.status(200).send({ success: true, msg: "Data deleted" });
    }
