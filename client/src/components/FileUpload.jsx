@@ -2,6 +2,9 @@ import React from "react";
 import { BiUpload } from "react-icons/bi";
 import { firebaseStorage } from "../config/firebase.config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+// toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const FileUpload = ({ isImage, isUploading, isPresent }) => {
    const uploadFiletoFireStore = (e) => {
@@ -23,6 +26,7 @@ const FileUpload = ({ isImage, isUploading, isPresent }) => {
          (error) => {
             // Handle unsuccessful uploads
             console.log(error);
+            toast.success(error);
             isUploading(false);
          },
          () => {
@@ -30,6 +34,7 @@ const FileUpload = ({ isImage, isUploading, isPresent }) => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                isPresent(downloadURL);
                isUploading(false);
+               toast.success("Upload Successful");
             });
          }
       );

@@ -13,6 +13,9 @@ import { validateUser } from "./api";
 // context
 import { useGlobalContext } from "./context/AppContext";
 import { actionType } from "./reducers/reducer";
+// Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const App = () => {
    const { state, dispatch } = useGlobalContext();
@@ -64,6 +67,18 @@ const App = () => {
                <Route path="/login" element={<Login setAuthStatus={setAuthStatus} />} />
                <Route path="/dashboard/*" element={<AdminDashboard />} />
             </Routes>
+            <ToastContainer
+               position="top-right"
+               autoClose={5000}
+               hideProgressBar={false}
+               newestOnTop={false}
+               closeOnClick
+               rtl={false}
+               pauseOnFocusLoss
+               draggable
+               pauseOnHover
+               theme="light"
+            />
          </div>
       </AnimatePresence>
    );
