@@ -51,7 +51,7 @@ const AdminDashboard = () => {
                <p className="text-lg font-semibold ">Albums</p>
             </NavLink>
          </div>
-         <main className="my-4 w-full lg:w-[70%] p-4">
+         <main className="my-4 w-full lg:w-[80%] p-4">
             <Routes>
                <Route path="/home" element={<DashboardHome />} />
                <Route path="/songs" element={<DashboardSongs />} />

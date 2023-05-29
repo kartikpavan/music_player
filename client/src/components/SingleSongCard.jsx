@@ -1,9 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const SingleSongCard = ({ song, index }) => {
-   const { _id, name, imageUrl, songUrl, album, artist, language, category } = song;
-
+const SingleSongCard = ({ data, index }) => {
    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
 
    //! later
@@ -12,23 +10,25 @@ const SingleSongCard = ({ song, index }) => {
    };
 
    return (
-      <motion.div className="relative w-40 min-w-[210px] p-2 cursor-pointer bg-orange-100/50 hover:bg-card duration-200 transition-all ease-in-out shadow-md rounded-md flex flex-col items-center">
+      <motion.div className="relative mt-8 w-40 min-w-[210px] p-2 cursor-pointer bg-white hover:bg-card duration-200 transition-all ease-in-out shadow-md rounded-md flex flex-col items-center">
          {/* image container */}
          <div className="w-40 min-w-[160px] min-h-[160px] rounded-md drop-shadow-md relative overflow-hidden">
             <motion.img
                whileHover={{ scale: 1.05 }}
-               src={imageUrl}
+               src={data?.imageUrl}
                alt="name"
-               className="rounded-md object-cover"
+               className="rounded-md w-full h-36 object-contain"
             />
          </div>
          {/* song name */}
-         <p className="text-base text-headingColor font-semibold my-2">
-            {name.length > 20 ? `${name.slice(0, 20)}...` : name}
+         <p className="text-base text-center text-headingColor font-semibold my-2">
+            {data?.name.length > 20 ? `${data?.name.slice(0, 20)}...` : data?.name}
             {/* artist name */}
-            <span className="block text-sm text-orange-400 my-1 text-center">
-               {artist.length > 20 ? `${artist.slice(0, 20)}...` : artist}
-            </span>
+            {data?.artist && (
+               <span className="block text-sm text-orange-400 my-1 text-center">
+                  {data?.artist.length > 20 ? `${data?.artist.slice(0, 20)}...` : data?.artist}
+               </span>
+            )}
          </p>
          {/* Delete Song */}
          <motion.button
