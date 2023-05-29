@@ -8,6 +8,6 @@ export const categories = [
 export const languages = [
    { id: 1, name: "Telugu", value: "Telugu" },
    { id: 2, name: "English", value: "English" },
-   { id: 3, name: "Spanish", value: "Spanish" },
+   { id: 3, name: "Korean", value: "Korean" },
    { id: 4, name: "Japanese", value: "Japanese" },
 ];

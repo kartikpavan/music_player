@@ -81,3 +81,14 @@ export async function deleteSingleUser(userId) {
       return null;
    }
 }
+
+// save new Song to DB
+export async function saveNewSong(incomingData) {
+   try {
+      const { data } = await axios.post(`${baseURL}/api/songs/save`, { ...incomingData });
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}
