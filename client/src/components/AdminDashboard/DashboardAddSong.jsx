@@ -6,7 +6,14 @@ import { motion } from "framer-motion";
 import { useGlobalContext } from "../../context/AppContext";
 import DropDownMenu from "../DropDownMenu";
 import { categories, languages } from "../../utils/data";
-import { fetchAllAlbums, fetchAllArtists, saveNewSong } from "../../api";
+import {
+   fetchAllAlbums,
+   fetchAllArtists,
+   fetchAllSongs,
+   saveNewAlbum,
+   saveNewArtist,
+   saveNewSong,
+} from "../../api";
 import { actionType } from "../../reducers/reducer";
 import Loader from "../Loader";
 import FileUpload from "../FileUpload";
@@ -16,33 +23,22 @@ const DashboardAddSong = () => {
    const [songName, setSongName] = useState("");
    // Image Upload state
    const [isImageUploading, setIsImageUploading] = useState(false);
-   const [artistImageCover, setArtistImageCover] = useState(null);
+   const [songImageCover, setSongImageCover] = useState(null);
 
    // Audio Upload State
    const [isAudioUploading, setIsAudioUploading] = useState(false);
    const [audioURL, setAudioURL] = useState(null);
 
-   const deleteUploadedFile = (url, image) => {
-      if (image) {
-         setIsImageUploading(true);
-         const deleteRef = ref(firebaseStorage, url);
-         deleteObject(deleteRef)
-            .then(() => {
-               setIsImageUploading(false);
-               setArtistImageCover(null);
-            })
-            .catch((err) => console.log(err));
-      } else {
-         setIsAudioUploading(true);
-         const delRef = ref(firebaseStorage, url);
-         deleteObject(delRef)
-            .then(() => {
-               setIsAudioUploading(false);
-               setAudioURL(null);
-            })
-            .catch((err) => console.log(err));
-      }
-   };
+   // Artist Upload State
+   const [artistName, setArtistName] = useState("");
+   const [artistSocialMedia, setArtistSocialMedia] = useState("");
+   const [artistImageCover, setArtistImageCover] = useState(null);
+   const [isArtistUploading, setIsArtistUploading] = useState(false);
+
+   // Album Upload State
+   const [albumName, setAlbumName] = useState("");
+   const [albumImageCover, setAlbumImageCover] = useState(null);
+   const [isAlbumUploading, setIsAlbumUploading] = useState(false);
 
    useEffect(() => {
       if (!state.allArtists) {
@@ -64,20 +60,59 @@ const DashboardAddSong = () => {
       }
    }, []);
 
-   const isSendBtnDisabled = Boolean(artistImageCover) && Boolean(audioURL);
+   // Deleting Uploaded Files
+   const deleteUploadedFile = (url, isSongCover, isArtist, isAlbum) => {
+      if (isSongCover) {
+         setIsImageUploading(true);
+         const deleteRef = ref(firebaseStorage, url);
+         deleteObject(deleteRef)
+            .then(() => {
+               setIsImageUploading(false);
+               setSongImageCover(null);
+            })
+            .catch((err) => console.log(err));
+      } else if (isArtist) {
+         setIsArtistUploading(true);
+         const deleteRef = ref(firebaseStorage, url);
+         deleteObject(deleteRef)
+            .then(() => {
+               setIsArtistUploading(false);
+               setArtistImageCover(null);
+            })
+            .catch((err) => console.log(err));
+      } else if (isAlbum) {
+         setIsAlbumUploading(true);
+         const deleteRef = ref(firebaseStorage, url);
+         deleteObject(deleteRef)
+            .then(() => {
+               setIsAlbumUploading(false);
+               setAlbumImageCover(null);
+            })
+            .catch((err) => console.log(err));
+      } else {
+         setIsAudioUploading(true);
+         const delRef = ref(firebaseStorage, url);
+         deleteObject(delRef)
+            .then(() => {
+               setIsAudioUploading(false);
+               setAudioURL(null);
+            })
+            .catch((err) => console.log(err));
+      }
+   };
 
-   // Save Song in the Mongo Db Database
+   // Save Song in the Mongo DB
    const saveSong = () => {
-      if (!artistImageCover || !audioURL) {
+      if (!songImageCover || !audioURL) {
          // throw error
-         alert("Cannot Submit");
+         alert("Missing Song Credentials");
       } else {
          setIsAudioUploading(true);
          setIsImageUploading(true);
 
          const data = {
             name: songName,
-            imageUrl: artistImageCover,
+            imageUrl: songImageCover,
             songUrl: audioURL,
             album: state.albumFilter,
             artist: state.artistFilter,
@@ -87,11 +122,16 @@ const DashboardAddSong = () => {
          // saving the song
          saveNewSong(data)
             .then((response) => {
-               console.log(response);
+               fetchAllSongs().then((res) => {
+                  dispatch({
+                     type: actionType.SET_ALL_SONGS,
+                     allSongs: res.data,
+                  });
+               });
                setSongName("");
                setIsAudioUploading(false);
                setIsImageUploading(false);
-               setArtistImageCover(null);
+               setSongImageCover(null);
                setAudioURL(null);
                dispatch({ type: actionType.SET_ALBUM_FILTER, albumFilter: null });
                dispatch({ type: actionType.SET_ARTIST_FILTER, artistFilter: null });
@@ -100,103 +140,281 @@ const DashboardAddSong = () => {
             })
             .catch((err) => {
                console.log(err);
-               setIsAudioUploading(false);
-               setIsImageUploading(false);
             });
       }
    };
 
+   // Save Artist in Mongo DB
+   const saveArtist = () => {
+      if (!artistName || !artistSocialMedia || !artistImageCover) {
+         alert("Missing Artist Credentials");
+      } else {
+         setIsArtistUploading(true);
+
+         const data = {
+            name: artistName,
+            imageUrl: artistImageCover,
+            twitter: artistSocialMedia,
+         };
+
+         // saving the song
+         saveNewArtist(data)
+            .then((response) => {
+               fetchAllArtists().then((res) => {
+                  dispatch({
+                     type: actionType.SET_ALL_ARTISTS,
+                     allArtists: res.data,
+                  });
+               });
+               setArtistName("");
+               setArtistSocialMedia("");
+               setIsArtistUploading(false);
+               setArtistImageCover(null);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+      }
+   };
+
+   // Save Album in Mongo DB
+   const saveAlbum = () => {
+      if (!albumName || !albumImageCover) {
+         alert("Missing Artist Credentials");
+      } else {
+         setIsAlbumUploading(true);
+         const data = {
+            name: albumName,
+            imageUrl: albumImageCover,
+         };
+
+         // saving the song
+         saveNewAlbum(data)
+            .then((response) => {
+               fetchAllAlbums().then((res) => {
+                  dispatch({
+                     type: actionType.SET_ALL_ALBUMS,
+                     allAlbums: res.data,
+                  });
+               });
+               setAlbumName("");
+               setIsAlbumUploading(false);
+               setAlbumImageCover(null);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+      }
+   };
+
+   const isSaveSongBtnDisabled = Boolean(songImageCover) && Boolean(audioURL);
+   const isSaveArtistBtnDisabled =
+      Boolean(artistImageCover) && Boolean(artistName.length) && Boolean(artistSocialMedia.length);
+   const isSaveAlbumBtnDisabled = Boolean(albumImageCover) && Boolean(albumName.length);
+
    return (
       <section className="flex items-center justify-between p-4 border flex-col gap-4">
-         <div className="p-2 border ">
-            {/* input */}
-            <input
-               value={songName}
-               onChange={(e) => setSongName(e.target.value)}
-               type="text"
-               placeholder="Name of the Song"
-               className="w-full rounded-md p-3 text-base font-semibold text-textColor outline-none border shadow-sm focus:border-orange-500"
-            />
-            {/* filter buttons */}
-            <div className="flex items-center justify-between gap-4 w-full my-2">
-               <DropDownMenu filterData={state.allArtists} title={"Artists"} />
-               <DropDownMenu filterData={state.allAlbums} title={"Albums"} />
-               <DropDownMenu filterData={languages} title={"Language"} />
-               <DropDownMenu filterData={categories} title={"Category"} />
-            </div>
-            {/* file upload container */}
-            <div className="bg-card w-full h-300 backdrop-blur-md rounded-md border-dotted shadow-sm my-2 border-gray-300 cursor-pointer">
-               {isImageUploading && <Loader isImage={true} />}
-               {!isImageUploading && (
-                  <>
-                     {!artistImageCover ? (
-                        <FileUpload
-                           isUploading={setIsImageUploading}
-                           isPresent={setArtistImageCover}
-                           isImage={true}
+         {/* song input */}
+         <input
+            value={songName}
+            onChange={(e) => setSongName(e.target.value)}
+            type="text"
+            placeholder="Name of the Song"
+            className="w-full rounded-md p-3 text-base font-semibold text-textColor outline-none border shadow-sm focus:border-orange-500"
+         />
+         {/* filter buttons */}
+         <div className="flex items-center justify-between gap-4 w-full my-2">
+            <DropDownMenu filterData={state.allArtists} title={"Artists"} />
+            <DropDownMenu filterData={state.allAlbums} title={"Albums"} />
+            <DropDownMenu filterData={languages} title={"Language"} />
+            <DropDownMenu filterData={categories} title={"Category"} />
+         </div>
+         {/* file upload container */}
+         <div className="bg-card w-full h-300 backdrop-blur-md rounded-md border-dotted shadow-sm my-2 border-gray-300 cursor-pointer">
+            {isImageUploading && <Loader isImage={true} />}
+            {!isImageUploading && (
+               <>
+                  {!songImageCover ? (
+                     <FileUpload
+                        isUploading={setIsImageUploading}
+                        isPresent={setSongImageCover}
+                        isImage={true}
+                     />
+                  ) : (
+                     <div className="relative w-full h-full rounded-md overflow-hidden ">
+                        <img
+                           src={songImageCover}
+                           alt="image"
+                           className="w-full h-full object-contain"
                         />
-                     ) : (
-                        <div className="relative w-full h-full rounded-md overflow-hidden ">
-                           <img
-                              src={artistImageCover}
-                              alt="image"
-                              className="w-full h-full object-contain"
-                           />
-                           <button
-                              onClick={() => deleteUploadedFile(artistImageCover, true)}
-                              className="p-2 text-sm absolute top-1 right-1 z-50 font-semibold text-red-500 bg-red-100 rounded-md hover:scale-110 duration-100 transition-all"
-                           >
-                              DELETE
-                           </button>
-                        </div>
-                     )}
-                  </>
-               )}
-            </div>
-            {/* Audio Upload Container */}
-            <div className="bg-card w-full h-300 backdrop-blur-md rounded-md border-dotted shadow-sm my-2 border-gray-300 cursor-pointer">
-               {isAudioUploading && <Loader isImage={false} />}
-               {!isAudioUploading && (
-                  <>
-                     {!audioURL ? (
-                        <FileUpload
-                           isUploading={setIsAudioUploading}
-                           isPresent={setAudioURL}
-                           isImage={false}
-                        />
-                     ) : (
-                        <div className="relative flex items-center justify-center w-full h-full rounded-md overflow-hidden ">
-                           <audio controls>
-                              <source src={audioURL} />
-                              <a href={audioURL}>Download</a>
-                           </audio>
-                           <button
-                              onClick={() => deleteUploadedFile(audioURL, false)}
-                              className="p-2 text-sm absolute top-1 right-1 z-50 font-semibold text-red-500 bg-red-100 rounded-md hover:scale-110 duration-100 transition-all"
-                           >
-                              DELETE
-                           </button>
-                        </div>
-                     )}
-                  </>
-               )}
-            </div>
-            {/* submit Button */}
-            <div className="flex items-center justify-center">
-               <div className="inline-block mr-2 mt-2">
-                  <motion.button
-                     type="button"
-                     onClick={saveSong}
-                     whileTap={{ scale: 0.75 }}
-                     disabled={!isSendBtnDisabled}
-                     className="w-40  rounded-md shadow-md p-2 text-white font-semibold bg-orange-600 text-lg disabled:bg-gray-300 disabled:text-gray-400"
-                  >
-                     SAVE SONG
-                  </motion.button>
-               </div>
+                        <button
+                           onClick={() => deleteUploadedFile(songImageCover, true, false, false)}
+                           className="p-2 text-sm absolute top-1 right-1 z-50 font-semibold text-red-500 bg-red-100 rounded-md hover:scale-110 duration-100 transition-all"
+                        >
+                           DELETE
+                        </button>
+                     </div>
+                  )}
+               </>
+            )}
+         </div>
+         {/* Audio Upload Container */}
+         <div className="bg-card w-full h-300 backdrop-blur-md rounded-md border-dotted shadow-sm my-2 border-gray-300 cursor-pointer">
+            {isAudioUploading && <Loader isImage={false} />}
+            {!isAudioUploading && (
+               <>
+                  {!audioURL ? (
+                     <FileUpload
+                        isUploading={setIsAudioUploading}
+                        isPresent={setAudioURL}
+                        isImage={false}
+                     />
+                  ) : (
+                     <div className="relative flex items-center justify-center w-full h-full rounded-md overflow-hidden ">
+                        <audio controls>
+                           <source src={audioURL} />
+                           <a href={audioURL}>Download</a>
+                        </audio>
+                        <button
+                           onClick={() => deleteUploadedFile(audioURL, false, false, false)}
+                           className="p-2 text-sm absolute top-1 right-1 z-50 font-semibold text-red-500 bg-red-100 rounded-md hover:scale-110 duration-100 transition-all"
+                        >
+                           DELETE
+                        </button>
+                     </div>
+                  )}
+               </>
+            )}
+         </div>
+         {/* Save Song */}
+         <div className="flex items-center justify-center mb-4">
+            <div className="inline-block mr-2 mt-2">
+               <motion.button
+                  type="button"
+                  onClick={saveSong}
+                  whileTap={{ scale: 0.75 }}
+                  disabled={!isSaveSongBtnDisabled}
+                  className="w-40  rounded-md shadow-md p-2 text-white font-semibold bg-orange-600 text-lg disabled:bg-gray-300 disabled:text-gray-400"
+               >
+                  SAVE SONG
+               </motion.button>
             </div>
          </div>
-         <div></div>
+
+         {/* Artist Upload Container*/}
+         <p className="text-lg font-semibold">Artist Details</p>
+         <div className="bg-card w-full h-300 backdrop-blur-md rounded-md border-dotted shadow-sm my-2 border-gray-300 cursor-pointer">
+            {isArtistUploading && <Loader isImage={true} />}
+            {!isArtistUploading && (
+               <>
+                  {!artistImageCover ? (
+                     <FileUpload
+                        isUploading={setIsArtistUploading}
+                        isPresent={setArtistImageCover}
+                        isImage={true}
+                     />
+                  ) : (
+                     <div className="relative w-full h-full rounded-md overflow-hidden ">
+                        <img
+                           src={artistImageCover}
+                           alt="image"
+                           className="w-full h-full object-contain"
+                        />
+                        <button
+                           onClick={() => deleteUploadedFile(artistImageCover, false, true, false)}
+                           className="p-2 text-sm absolute top-1 right-1 z-50 font-semibold text-red-500 bg-red-100 rounded-md hover:scale-110 duration-100 transition-all"
+                        >
+                           DELETE
+                        </button>
+                     </div>
+                  )}
+               </>
+            )}
+         </div>
+
+         {/* Artist input */}
+         <input
+            value={artistName}
+            onChange={(e) => setArtistName(e.target.value)}
+            type="text"
+            placeholder="Artist Name"
+            className="w-full rounded-md p-3 text-base font-semibold text-textColor outline-none border shadow-sm focus:border-orange-500"
+         />
+         {/* Artist Social Media */}
+         <input
+            value={artistSocialMedia}
+            onChange={(e) => setArtistSocialMedia(e.target.value)}
+            type="text"
+            placeholder="Artist's Twitter Handle"
+            className="w-full rounded-md p-3 text-base font-semibold text-textColor outline-none border shadow-sm focus:border-orange-500"
+         />
+         {/* Save Artist */}
+         <div className="flex items-center justify-center mb-4">
+            <div className="inline-block mr-2 mt-2">
+               <motion.button
+                  type="button"
+                  onClick={saveArtist}
+                  whileTap={{ scale: 0.75 }}
+                  disabled={!isSaveArtistBtnDisabled}
+                  className="w-40 rounded-md shadow-md p-2 text-white font-semibold bg-orange-600 text-lg disabled:bg-gray-300 disabled:text-gray-400"
+               >
+                  SAVE ARTIST
+               </motion.button>
+            </div>
+         </div>
+
+         {/* Album Upload Container*/}
+         <p className="text-lg font-semibold">Album Details</p>
+         <div className="bg-card w-full h-300 backdrop-blur-md rounded-md border-dotted shadow-sm my-2 border-gray-300 cursor-pointer">
+            {isAlbumUploading && <Loader isImage={true} />}
+            {!isAlbumUploading && (
+               <>
+                  {!albumImageCover ? (
+                     <FileUpload
+                        isUploading={setIsAlbumUploading}
+                        isPresent={setAlbumImageCover}
+                        isImage={true}
+                     />
+                  ) : (
+                     <div className="relative w-full h-full rounded-md overflow-hidden ">
+                        <img
+                           src={albumImageCover}
+                           alt="image"
+                           className="w-full h-full object-contain"
+                        />
+                        <button
+                           onClick={() => deleteUploadedFile(artistImageCover, false, false, true)}
+                           className="p-2 text-sm absolute top-1 right-1 z-50 font-semibold text-red-500 bg-red-100 rounded-md hover:scale-110 duration-100 transition-all"
+                        >
+                           DELETE
+                        </button>
+                     </div>
+                  )}
+               </>
+            )}
+         </div>
+         {/* Album input */}
+         <input
+            value={albumName}
+            onChange={(e) => setAlbumName(e.target.value)}
+            type="text"
+            placeholder="Album Name"
+            className="w-full rounded-md p-3 text-base font-semibold text-textColor outline-none border shadow-sm focus:border-orange-500"
+         />
+         {/* Save Album */}
+         <div className="flex items-center justify-center mb-4">
+            <div className="inline-block mr-2 mt-2">
+               <motion.button
+                  type="button"
+                  onClick={saveAlbum}
+                  whileTap={{ scale: 0.75 }}
+                  disabled={!isSaveAlbumBtnDisabled}
+                  className="w-40 rounded-md shadow-md p-2 text-white font-semibold bg-orange-600 text-lg disabled:bg-gray-300 disabled:text-gray-400"
+               >
+                  SAVE ALBUM
+               </motion.button>
+            </div>
+         </div>
       </section>
    );
 };

@@ -92,3 +92,25 @@ export async function saveNewSong(incomingData) {
       return null;
    }
 }
+
+// save new Artist to DB
+export async function saveNewArtist(incomingData) {
+   try {
+      const { data } = await axios.post(`${baseURL}/api/artists/save`, { ...incomingData });
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}
+
+// save new Album to DB
+export async function saveNewAlbum(incomingData) {
+   try {
+      const { data } = await axios.post(`${baseURL}/api/albums/save`, { ...incomingData });
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}
