@@ -4,4 +4,10 @@ export const initialState = {
    allSongs: null,
    allAlbums: null,
    allArtists: null,
+   // Filter Reducers
+   filterTerm:"all",
+   artistFilter:null,
+   albumFilter:null,
+   languageFilter:null,
+   categoryFilter:null
 };

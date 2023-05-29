@@ -40,6 +40,4 @@ const DashboardUsers = () => {
    );
 };
 
-
-
 export default DashboardUsers;
