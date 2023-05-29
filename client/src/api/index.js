@@ -114,3 +114,36 @@ export async function saveNewAlbum(incomingData) {
       return null;
    }
 }
+
+// delete single song
+export async function deleteSingleSong(songId) {
+   try {
+      const { data } = await axios.delete(`${baseURL}/api/songs/delete/${songId}`);
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}
+
+// delete single Artist
+export async function deleteSingleArtist(artistId) {
+   try {
+      const { data } = await axios.delete(`${baseURL}/api/artists/delete/${artistId}`);
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}
+
+// delete single Artist
+export async function deleteSingleAlbum(albumId) {
+   try {
+      const { data } = await axios.delete(`${baseURL}/api/albums/delete/${albumId}`);
+      return data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+}

@@ -1,12 +1,59 @@
 import React from "react";
 import { motion } from "framer-motion";
+import {
+   deleteSingleAlbum,
+   deleteSingleArtist,
+   deleteSingleSong,
+   fetchAllAlbums,
+   fetchAllArtists,
+   fetchAllSongs,
+} from "../api";
+import { actionType } from "../reducers/reducer";
+import { useGlobalContext } from "../context/AppContext";
 
-const SingleSongCard = ({ data, index }) => {
+// toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+const SingleSongCard = ({ data, index, type }) => {
    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+   const { state, dispatch } = useGlobalContext();
 
-   //! later
-   const deleteSong = (songId) => {
-      setShowDeleteModal(false);
+   const deleteObject = (data) => {
+      if (type === "song") {
+         deleteSingleSong(data._id).then((response) => {
+            // once the data is deleted we will fetch the new data from DB and also update the Context provider with the new Data
+            if (response) {
+               fetchAllSongs().then((data) =>
+                  dispatch({ type: actionType.SET_ALL_SONGS, allSongs: data.data })
+               );
+            }
+            toast.success("Song Deleted");
+            setShowDeleteModal(false);
+         });
+      } else if (type === "artist") {
+         deleteSingleArtist(data._id).then((response) => {
+            // once the data is deleted we will fetch the new data from DB and also update the Context provider with the new Data
+            if (response) {
+               fetchAllArtists().then((data) =>
+                  dispatch({ type: actionType.SET_ALL_ARTISTS, allArtists: data.data })
+               );
+            }
+            toast.success("Artist Deleted");
+            setShowDeleteModal(false);
+         });
+      } else if (type === "album") {
+         deleteSingleAlbum(data._id).then((response) => {
+            // once the data is deleted we will fetch the new data from DB and also update the Context provider with the new Data
+            if (response) {
+               fetchAllAlbums().then((data) =>
+                  dispatch({ type: actionType.SET_ALL_ALBUMS, allAlbums: data.data })
+               );
+            }
+            toast.success("Album Deleted");
+            setShowDeleteModal(false);
+         });
+      }
    };
 
    return (
@@ -47,24 +94,24 @@ const SingleSongCard = ({ data, index }) => {
                      {/*content*/}
                      <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                         {/*body*/}
-                        <div className="relative p-4 flex-auto">
+                        <div className="relative p-6 flex-auto">
                            <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                              Are you sure you want to Delete the song ?
+                              Are you sure you want to Delete this ?
                            </p>
                         </div>
                         {/*footer*/}
-                        <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b gap-x-4">
+                        <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                            <button
-                              className="text-red-500 font-semibold"
+                              className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                               type="button"
                               onClick={() => setShowDeleteModal(false)}
                            >
                               Close
                            </button>
                            <button
-                              className="bg-orange-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                              className="bg-orange-500 text-white active:bg-orange-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                               type="button"
-                              onClick={() => deleteSong(_id)}
+                              onClick={() => deleteObject(data)}
                            >
                               Save Changes
                            </button>

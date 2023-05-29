@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGlobalContext } from "../../context/AppContext";
-import { motion } from "framer-motion";
-import { AiFillSetting, AiFillDelete } from "react-icons/ai";
-import { changeUserRole, deleteSingleUser, fetchAllUsers } from "../../api";
+import { fetchAllUsers } from "../../api";
 import { actionType } from "../../reducers/reducer";
 // user Card
 import DBUserCard from "../DBUserCard";

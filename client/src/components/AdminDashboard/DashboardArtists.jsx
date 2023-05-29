@@ -30,7 +30,9 @@ const DashboardArtists = () => {
             <div className="w-full flex flex-wrap gap-3 items-center justify-evenly">
                {state.allArtists &&
                   state.allArtists?.map((item, idx) => {
-                     return <SingleSongCard key={item?._id} data={item} index={idx} />;
+                     return (
+                        <SingleSongCard key={item?._id} data={item} index={idx} type="artist" />
+                     );
                   })}
             </div>
          </div>
