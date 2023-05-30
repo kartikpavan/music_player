@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL = "http://localhost:3001";
-
+const mainURL = "https://music-player-znq7.onrender.com/";
 // Validate the user using Token provided by Firebase
 export async function validateUser(token) {
    try {

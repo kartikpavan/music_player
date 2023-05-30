@@ -11,6 +11,14 @@ import DropDownMenu from "./DropDownMenu";
 import Loader from "./Loader";
 import FileUpload from "./FileUpload";
 import MusicPlayer from "./MusicPlayer";
+// users
+import AllAlbums from "./User/AllAlbums";
+import AllArtists from "./User/AllArtists";
+import AllUsers from "./User/AllUsers";
+import UserSongs from "./User/UserSongs";
+import UserAddSong from "./User/UserAddSong";
+import HomeCard from "./HomeCard";
+import UserHome from "./User/UserHome";
 
 export {
    Navbar,
@@ -26,4 +34,12 @@ export {
    Loader,
    FileUpload,
    MusicPlayer,
+   // users
+   AllAlbums,
+   AllArtists,
+   AllUsers,
+   UserSongs,
+   UserAddSong,
+   HomeCard,
+   UserHome
 };
