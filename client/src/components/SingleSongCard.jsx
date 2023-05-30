@@ -14,13 +14,20 @@ import { useGlobalContext } from "../context/AppContext";
 // toastify
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { deleteObject, ref } from "firebase/storage";
+import { firebaseStorage } from "../config/firebase.config";
 
 const SingleSongCard = ({ data, index, type }) => {
    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
    const { state, dispatch } = useGlobalContext();
 
-   const deleteObject = (data) => {
+   const deleteInstance = (data) => {
+      // deleting Single song
       if (type === "song") {
+         // Deleting Images from Firebase Storage
+         const deleteRef = ref(firebaseStorage, data.imageUrl);
+         deleteObject(deleteRef).then(() => {});
+         //  deleting Instance from Mongo DB
          deleteSingleSong(data._id).then((response) => {
             // once the data is deleted we will fetch the new data from DB and also update the Context provider with the new Data
             if (response) {
@@ -31,7 +38,12 @@ const SingleSongCard = ({ data, index, type }) => {
             toast.success("Song Deleted");
             setShowDeleteModal(false);
          });
+         // deleting Single Artist
       } else if (type === "artist") {
+         // Deleting Artist from Firebase Storage
+         const deleteRef = ref(firebaseStorage, data.imageUrl);
+         deleteObject(deleteRef).then(() => {});
+         //  deleting Instance from Mongo DB
          deleteSingleArtist(data._id).then((response) => {
             // once the data is deleted we will fetch the new data from DB and also update the Context provider with the new Data
             if (response) {
@@ -42,7 +54,12 @@ const SingleSongCard = ({ data, index, type }) => {
             toast.success("Artist Deleted");
             setShowDeleteModal(false);
          });
+         // deleting Single Album
       } else if (type === "album") {
+         // Deleting Album from Firebase Storage
+         const deleteRef = ref(firebaseStorage, data.imageUrl);
+         deleteObject(deleteRef).then(() => {});
+         //  deleting Instance from Mongo DB
          deleteSingleAlbum(data._id).then((response) => {
             // once the data is deleted we will fetch the new data from DB and also update the Context provider with the new Data
             if (response) {
@@ -111,7 +128,7 @@ const SingleSongCard = ({ data, index, type }) => {
                            <button
                               className="bg-orange-500 text-white active:bg-orange-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                               type="button"
-                              onClick={() => deleteObject(data)}
+                              onClick={() => deleteInstance(data)}
                            >
                               Save Changes
                            </button>
