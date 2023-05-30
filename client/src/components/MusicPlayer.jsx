@@ -88,7 +88,8 @@ const MusicPlayer = () => {
                   onClickNext={nextTrack}
                   onClickPrevious={previousTrack}
                   showDownloadProgress={true}
-                  volume={0.1}
+                  autoPlayAfterSrcChange={true}
+                  volume={0.5}
                   src={state?.allSongs[state?.songIndex]?.songUrl}
                   onPlay={(e) => console.log("onPlay")}
                   // other props here

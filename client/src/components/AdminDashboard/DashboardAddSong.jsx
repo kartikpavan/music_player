@@ -123,7 +123,7 @@ const DashboardAddSong = () => {
 
    // Save Song in the Mongo DB
    const saveSong = () => {
-      if (!songImageCover || !audioURL) {
+      if (!songImageCover || !audioURL || !songName) {
          // throw error
          alert("Missing Song Credentials");
       } else {
@@ -139,7 +139,8 @@ const DashboardAddSong = () => {
             language: state.languageFilter,
             category: state.filterTerm,
          };
-         // saving the song
+         // saving the songc
+
          saveNewSong(data)
             .then((response) => {
                fetchAllSongs().then((res) => {
