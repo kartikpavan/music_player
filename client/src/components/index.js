@@ -19,6 +19,7 @@ import UserSongs from "./User/UserSongs";
 import UserAddSong from "./User/UserAddSong";
 import HomeCard from "./HomeCard";
 import UserHome from "./User/UserHome";
+import UserSongCard from "./UserSongCard";
 
 export {
    Navbar,
@@ -41,5 +42,6 @@ export {
    UserSongs,
    UserAddSong,
    HomeCard,
-   UserHome
+   UserHome,
+   UserSongCard,
 };

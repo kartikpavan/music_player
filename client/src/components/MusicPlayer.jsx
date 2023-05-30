@@ -82,6 +82,7 @@ const MusicPlayer = () => {
 
             <div className="flex-1">
                <AudioPlayer
+                  autoPlay={true}
                   showSkipControls={true}
                   showJumpControls={true}
                   showFilledVolume={true}
@@ -89,7 +90,7 @@ const MusicPlayer = () => {
                   onClickPrevious={previousTrack}
                   showDownloadProgress={true}
                   autoPlayAfterSrcChange={true}
-                  volume={0.5}
+                  volume={0.05}
                   src={state?.allSongs[state?.songIndex]?.songUrl}
                   onPlay={(e) => console.log("onPlay")}
                   // other props here

@@ -4,7 +4,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 // Firebase
 import { firebaseAuth } from "./config/firebase.config";
 // Pages
-import { Home, Login } from "./pages";
+import { Home, Login, Notfound } from "./pages";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 // Framer Motion
 import { AnimatePresence } from "framer-motion";
@@ -86,7 +86,7 @@ const App = () => {
             <motion.div
                initial={{ opacity: 0, y: 50 }}
                animate={{ opacity: 1, y: 0 }}
-               className={`fixed min-w-[700px] h-26 inset-x-0 bottom-0 bg-cardOverlay drop-shadow-xl backdrop-blur-md flex items-center justify-center`}
+               className={`fixed min-w-[700px] h-26 inset-x-0 bottom-0 bg-white drop-shadow-2xl backdrop-blur-lg flex items-center justify-center`}
             >
                <MusicPlayer />
             </motion.div>
