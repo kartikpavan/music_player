@@ -10,6 +10,7 @@ import SingleSongCard from "./SingleSongCard";
 import DropDownMenu from "./DropDownMenu";
 import Loader from "./Loader";
 import FileUpload from "./FileUpload";
+import MusicPlayer from "./MusicPlayer";
 
 export {
    Navbar,
@@ -24,4 +25,5 @@ export {
    DropDownMenu,
    Loader,
    FileUpload,
+   MusicPlayer,
 };

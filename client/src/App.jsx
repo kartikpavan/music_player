@@ -16,6 +16,8 @@ import { actionType } from "./reducers/reducer";
 // Toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { motion } from "framer-motion";
+import { MusicPlayer } from "./components";
 
 const App = () => {
    const { state, dispatch } = useGlobalContext();
@@ -80,6 +82,15 @@ const App = () => {
                theme="light"
             />
          </div>
+         {state.isSongPlaying && (
+            <motion.div
+               initial={{ opacity: 0, y: 50 }}
+               animate={{ opacity: 1, y: 0 }}
+               className={`fixed min-w-[700px] h-26 inset-x-0 bottom-0 bg-cardOverlay drop-shadow-xl backdrop-blur-md flex items-center justify-center`}
+            >
+               <MusicPlayer />
+            </motion.div>
+         )}
       </AnimatePresence>
    );
 };

@@ -9,6 +9,8 @@ export const actionType = {
    SET_ARTIST_FILTER: "SET_ARTIST_FILTER",
    SET_ALBUM_FILTER: "SET_ALBUM_FILTER",
    SET_LANGUAGE_FILTER: "SET_LANGUAGE_FILTER",
+   SET_IS_SONG_PLAYING: "SET_IS_SONG_PLAYING",
+   SET_SONG_INDEX: "SET_SONG_INDEX",
 };
 
 const reducer = (state, action) => {
@@ -63,7 +65,16 @@ const reducer = (state, action) => {
             ...state,
             languageFilter: action.languageFilter,
          };
-
+      case actionType.SET_IS_SONG_PLAYING:
+         return {
+            ...state,
+            isSongPlaying: action.isSongPlaying,
+         };
+      case actionType.SET_SONG_INDEX:
+         return {
+            ...state,
+            songIndex: action.songIndex,
+         };
       default:
          return state;
    }

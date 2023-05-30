@@ -73,8 +73,27 @@ const SingleSongCard = ({ data, index, type }) => {
       }
    };
 
+   const addSongToContext = () => {
+      if (!state.isSongPlaying) {
+         dispatch({
+            type: actionType.SET_IS_SONG_PLAYING,
+            isSongPlaying: true,
+         });
+      }
+      // this index is coming as a prop from other compoents
+      if (state.songIndex !== index) {
+         dispatch({
+            type: actionType.SET_SONG_INDEX,
+            songIndex: index,
+         });
+      }
+   };
+
    return (
-      <motion.div className="relative mt-8 w-40 min-w-[210px] p-2 cursor-pointer bg-white hover:bg-card duration-200 transition-all ease-in-out shadow-md rounded-md flex flex-col items-center">
+      <motion.div
+         onClick={type === "song" ? addSongToContext : null}
+         className="relative mt-8 w-40 min-w-[210px] p-2 cursor-pointer bg-white hover:bg-card duration-200 transition-all ease-in-out shadow-md rounded-md flex flex-col items-center"
+      >
          {/* image container */}
          <div className="w-40 min-w-[160px] min-h-[160px] rounded-md drop-shadow-md relative overflow-hidden">
             <motion.img
