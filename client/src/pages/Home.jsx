@@ -52,7 +52,7 @@ const Home = () => {
                <p className="text-lg font-semibold ">Albums</p>
             </NavLink>
          </div>
-         <main className="my-4 w-full lg:w-[80%] p-4 border-2">
+         <main className="my-4 w-full lg:w-[80%] p-4">
             {/* all cards container */}
             <Routes>
                <Route path="/" element={<UserHome />} />

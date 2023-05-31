@@ -75,7 +75,9 @@ const MusicPlayer = () => {
                      <TbPlaylist size={22} className="text-white" />
                   </motion.i>
                   <motion.i whileTap={{ scale: 0.75 }}>
-                     <TbDownload size={22} className="text-white" />
+                     <a href={state?.allSongs[state?.songIndex]?.songUrl} target="_blank" download>
+                        <TbDownload size={22} className="text-white" />
+                     </a>
                   </motion.i>
                </div>
             </div>
@@ -93,7 +95,6 @@ const MusicPlayer = () => {
                   volume={0.05}
                   src={state?.allSongs[state?.songIndex]?.songUrl}
                   onPlay={(e) => console.log("onPlay")}
-                  // other props here
                />
             </div>
             {isPlaylist && <MusicPlayerPlaylist />}

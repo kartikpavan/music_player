@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.min.css";
 
 const UserSongCard = ({ data, index, type }) => {
    const { state, dispatch } = useGlobalContext();
-   // const [isFavorite,setIsFavorite] = useState(false)
 
    const addSongToContext = () => {
       if (!state.isSongPlaying) {
@@ -35,9 +34,7 @@ const UserSongCard = ({ data, index, type }) => {
                   type: actionType.SET_FAVORITE_SONGS,
                   favoriteSongs: response.data.favoriteSongs,
                });
-               if (response.data.favoriteSongs.includes(songId)) {
-                  toast.success("Added to Favorites");
-               }
+               toast.success("Added to Favorites");
             }
          })
          .catch((err) => {
@@ -69,7 +66,7 @@ const UserSongCard = ({ data, index, type }) => {
             <div className="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
                {/* Like and Unlike Button */}
                {/* checking if the user has the current song in his favorites list already or not */}
-               {state.user?.user?.favoriteSongs?.includes(data._id) ? (
+               {state.user?.user?.favoriteSongs?.filter((song) => song._id === data?._id) ? (
                   <button
                      onClick={() => removeFromFavorites(data?._id, state.user?.user?._id)}
                      className="hover:scale-110 text-red-500 opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition"

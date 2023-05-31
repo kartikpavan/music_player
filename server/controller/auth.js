@@ -102,10 +102,14 @@ const deleteUser = async (req, res) => {
 
 // updating / adding Favorite song
 const addFavoriteSong = async (req, res) => {
+   const response = await fetch(
+      `https://music-player-znq7.onrender.com/api/songs/single/${req.body.data.songId}`
+   );
+   const singleSong = await response.json();
    try {
       const updatedUser = await User.findOneAndUpdate(
-         { _id: req.params.userId, favoriteSongs: { $ne: req.body.data.songId } }, // detecting duplicates before inserting
-         { $push: { favoriteSongs: req.body.data.songId } }, // adding an element to the array
+         { _id: req.params.userId }, // ( favoriteSongs: { $ne: req.body.songId } ) detecting duplicates before inserting
+         { $push: { favoriteSongs: singleSong } }, // adding an element to the array
          { upsert: true, new: true }
       );
       return res.status(200).json({ success: true, data: updatedUser });
