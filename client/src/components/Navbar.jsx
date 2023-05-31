@@ -47,7 +47,7 @@ const Navbar = () => {
             </li>
             <li className="mx-5 text-lg">
                <NavLink
-                  to="/music"
+                  to="/favorites"
                   className={({ isActive }) => (isActive ? activeLinkStyle : nonActiveLinkStyle)}
                >
                   My Music

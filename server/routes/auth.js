@@ -8,6 +8,7 @@ const {
    getSingleUser,
    addFavoriteSong,
    deleteFavoriteSong,
+   getFavoriteSongs,
 } = require("../controller/auth");
 
 router.get("/login", login);

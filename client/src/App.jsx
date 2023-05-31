@@ -4,7 +4,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 // Firebase
 import { firebaseAuth } from "./config/firebase.config";
 // Pages
-import { Home, Login, Notfound } from "./pages";
+import { Favorites, Home, Login, Notfound } from "./pages";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 // Framer Motion
 import { AnimatePresence } from "framer-motion";

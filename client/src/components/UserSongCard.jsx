@@ -31,7 +31,10 @@ const UserSongCard = ({ data, index, type }) => {
       addToLikedSongs(userId, songId)
          .then((response) => {
             if (response.data) {
-               console.log(response.data);
+               dispatch({
+                  type: actionType.SET_FAVORITE_SONGS,
+                  favoriteSongs: response.data.favoriteSongs,
+               });
                if (response.data.favoriteSongs.includes(songId)) {
                   toast.success("Added to Favorites");
                }

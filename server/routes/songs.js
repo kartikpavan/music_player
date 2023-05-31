@@ -7,6 +7,7 @@ const {
    getSingleSong,
    deleteSong,
    updateSong,
+   getFavoriteSongs,
 } = require("../controller/songs");
 
 router.get("/all", getAllSongs);

@@ -10,15 +10,16 @@ import {
 } from "../components";
 import { NavLink, useNavigate, Route, Routes } from "react-router-dom";
 import Notfound from "./Notfound";
+import Favorites from "./Favorites";
 
 const activeNavLink =
    "w-28 h-10 flex items-center text-orange-500 justify-center bg-orange-100 rounded-lg transition-all duration-100 ease-in";
 const inactiveNavLink = "w-28 h-10 text-textColor flex items-center justify-center rounded-lg";
 
 const Home = () => {
-   const navigate = useNavigate;
+   // const navigate = useNavigate;
 
-   useEffect(() => {});
+   // useEffect(() => {});
 
    return (
       <div className="w-full h-auto flex flex-col items-center justify-center bg-primary">
@@ -59,6 +60,7 @@ const Home = () => {
                <Route path="/artists" element={<AllArtists />} />
                <Route path="/albums" element={<AllAlbums />} />
                <Route path="/addSong" element={<UserAddSong />} />
+               <Route path="/favorites" element={<Favorites />} />
                <Route path="*" element={<Notfound />} />
             </Routes>
          </main>

@@ -114,6 +114,7 @@ const addFavoriteSong = async (req, res) => {
    }
 };
 
+// unfavorite song
 const deleteFavoriteSong = async (req, res) => {
    try {
       const updatedUser = await User.findOneAndUpdate(

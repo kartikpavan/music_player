@@ -174,3 +174,13 @@ export async function removeFromLikedSongs(userId, songId) {
       return error;
    }
 }
+
+export async function getSingleSong(songId) {
+   try {
+      const { data } = await axios.get(`${baseURL}/api/songs/single/${songId}`);
+      return data;
+   } catch (error) {
+      console.log(error);
+      return error;
+   }
+}
