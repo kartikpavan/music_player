@@ -11,6 +11,7 @@ export const actionType = {
    SET_LANGUAGE_FILTER: "SET_LANGUAGE_FILTER",
    SET_IS_SONG_PLAYING: "SET_IS_SONG_PLAYING",
    SET_SONG_INDEX: "SET_SONG_INDEX",
+   SET_IS_FAVORITE: "SET_IS_FAVORITE",
 };
 
 const reducer = (state, action) => {
@@ -74,6 +75,11 @@ const reducer = (state, action) => {
          return {
             ...state,
             songIndex: action.songIndex,
+         };
+      case actionType.SET_IS_FAVORITE:
+         return {
+            ...state,
+            isFavorite: action.isFavorite,
          };
       default:
          return state;

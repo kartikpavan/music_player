@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema(
          type: String,
          required: true,
       },
+      favoriteSongs: [String],
    },
    { timestamps: true }
 );

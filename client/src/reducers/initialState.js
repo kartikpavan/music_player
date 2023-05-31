@@ -13,4 +13,6 @@ export const initialState = {
    // song player
    isSongPlaying: false,
    songIndex: 0, // which song is currently playing
+   //favorites
+   isFavorite: false,
 };

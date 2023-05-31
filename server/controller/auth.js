@@ -66,6 +66,17 @@ const getAllUsers = async (req, res) => {
    }
 };
 
+//Get Single User
+const getSingleUser = async (req, res) => {
+   // find the user using the ID supplied in tha parameter
+   const data = await User.findOne({ _id: req.params.userId });
+   if (!data) {
+      return res.status(400).send({ success: false, msg: "ERROR! Artist not found" }); // internal Server Error
+   } else {
+      return res.status(200).send({ success: true, data: data });
+   }
+};
+
 // Updating User Role
 const updateUserRole = async (req, res) => {
    try {
@@ -89,4 +100,39 @@ const deleteUser = async (req, res) => {
    }
 };
 
-module.exports = { login, getAllUsers, updateUserRole, deleteUser };
+// updating / adding Favorite song
+const addFavoriteSong = async (req, res) => {
+   try {
+      const updatedUser = await User.findOneAndUpdate(
+         { _id: req.params.userId, favoriteSongs: { $ne: req.body.data.songId } }, // detecting duplicates before inserting
+         { $push: { favoriteSongs: req.body.data.songId } }, // adding an element to the array
+         { upsert: true, new: true }
+      );
+      return res.status(200).json({ success: true, data: updatedUser });
+   } catch (error) {
+      return res.status(400).json({ success: false, msg: error });
+   }
+};
+
+const deleteFavoriteSong = async (req, res) => {
+   try {
+      const updatedUser = await User.findOneAndUpdate(
+         { _id: req.params.userId },
+         { $pull: { favoriteSongs: req.body.data.songId } }, // removing the element from the array
+         { new: true }
+      );
+      return res.status(200).json({ success: true, data: updatedUser });
+   } catch (error) {
+      return res.status(400).json({ success: false, msg: error });
+   }
+};
+
+module.exports = {
+   login,
+   getAllUsers,
+   updateUserRole,
+   deleteUser,
+   getSingleUser,
+   addFavoriteSong,
+   deleteFavoriteSong,
+};

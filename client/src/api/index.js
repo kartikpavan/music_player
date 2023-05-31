@@ -1,8 +1,8 @@
 import axios from "axios";
 
-// const baseURL = "http://localhost:3001";
+const baseURL = "http://localhost:3001";
 // const mainURL = "https://music-player-znq7.onrender.com/";
-const baseURL = "https://music-player-znq7.onrender.com";
+// const baseURL = "https://music-player-znq7.onrender.com";
 // Validate the user using Token provided by Firebase
 export async function validateUser(token) {
    try {
@@ -146,5 +146,31 @@ export async function deleteSingleAlbum(albumId) {
    } catch (error) {
       console.log(error);
       return null;
+   }
+}
+
+// Favorite Song
+export async function addToLikedSongs(userId, songId) {
+   try {
+      const { data } = await axios.put(`${baseURL}/api/users/favorites/${userId}`, {
+         data: { songId },
+      });
+      return data;
+   } catch (error) {
+      console.log(error);
+      return error;
+   }
+}
+
+// Unfavorite Song
+export async function removeFromLikedSongs(userId, songId) {
+   try {
+      const { data } = await axios.put(`${baseURL}/api/users/unfavorite/${userId}`, {
+         data: { songId },
+      });
+      return data;
+   } catch (error) {
+      console.log(error);
+      return error;
    }
 }

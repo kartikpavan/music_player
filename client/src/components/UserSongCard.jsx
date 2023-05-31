@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGlobalContext } from "../context/AppContext";
 import { motion } from "framer-motion";
 import { actionType } from "../reducers/reducer";
+import { addToLikedSongs, removeFromLikedSongs } from "../api";
+// toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const UserSongCard = ({ data, index, type }) => {
    const { state, dispatch } = useGlobalContext();
+   // const [isFavorite,setIsFavorite] = useState(false)
 
    const addSongToContext = () => {
       if (!state.isSongPlaying) {
@@ -22,6 +27,33 @@ const UserSongCard = ({ data, index, type }) => {
       }
    };
 
+   const addToFavorites = (songId, userId) => {
+      addToLikedSongs(userId, songId)
+         .then((response) => {
+            if (response.data) {
+               console.log(response.data);
+               if (response.data.favoriteSongs.includes(songId)) {
+                  toast.success("Added to Favorites");
+               }
+            }
+         })
+         .catch((err) => {
+            console.log(err);
+            toast.error("something went Wrong");
+         });
+   };
+
+   const removeFromFavorites = (songId, userId) => {
+      removeFromLikedSongs(userId, songId)
+         .then((response) => {
+            toast.info("removed from Favorites");
+         })
+         .catch((err) => {
+            console.log(err);
+            toast.error("something went Wrong");
+         });
+   };
+
    return (
       <div className="w-full md:w-64 bg-white shadow-lg rounded-md p-3 ">
          <div className="group relative md:h-64 ">
@@ -32,18 +64,45 @@ const UserSongCard = ({ data, index, type }) => {
                className="w-full h-full md:w-72 block rounded object-contain"
             />
             <div className="absolute bg-black rounded bg-opacity-0 group-hover:bg-opacity-60 w-full h-full top-0 flex items-center group-hover:opacity-100 transition justify-evenly">
-               <button className="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition">
-                  <svg
-                     xmlns="http://www.w3.org/2000/svg"
-                     width="20"
-                     height="20"
-                     fill="currentColor"
-                     className="bi bi-heart"
-                     viewBox="0 0 16 16"
+               {/* Like and Unlike Button */}
+               {/* checking if the user has the current song in his favorites list already or not */}
+               {state.user?.user?.favoriteSongs?.includes(data._id) ? (
+                  <button
+                     onClick={() => removeFromFavorites(data?._id, state.user?.user?._id)}
+                     className="hover:scale-110 text-red-500 opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition"
                   >
-                     <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                  </svg>
-               </button>
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        fill="currentColor"
+                        className="bi bi-heart-fill"
+                        viewBox="0 0 16 16"
+                     >
+                        <path
+                           fillRule="evenodd"
+                           d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                        />
+                     </svg>
+                  </button>
+               ) : (
+                  <button
+                     onClick={() => addToFavorites(data?._id, state.user?.user?._id)}
+                     className="hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition"
+                  >
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        fill="currentColor"
+                        className="bi bi-heart"
+                        viewBox="0 0 16 16"
+                     >
+                        <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                     </svg>
+                  </button>
+               )}
+
                {/* Play Button svg */}
                <button
                   onClick={type === "song" ? addSongToContext : null}
